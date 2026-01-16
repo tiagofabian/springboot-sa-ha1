@@ -1,76 +1,76 @@
-CREATE TABLE IF NOT EXISTS usuarios (
-                                        id_usuario SERIAL PRIMARY KEY,
-                                        nombre   VARCHAR(50) NOT NULL,
-    correo   VARCHAR(50) NOT NULL,
-    telefono VARCHAR(12),
-    clave    VARCHAR(16) NOT NULL
+CREATE TABLE IF NOT EXISTS customers (
+     id_customer SERIAL PRIMARY KEY,
+     customer_name VARCHAR(50) NOT NULL,
+    email VARCHAR(50) NOT NULL,
+    phone VARCHAR(12),
+    password VARCHAR(16) NOT NULL
     );
 
-CREATE TABLE IF NOT EXISTS direcciones (
-                                           id_direccion SERIAL PRIMARY KEY,
-                                           direccion     VARCHAR(50) NOT NULL,
-    ciudad        VARCHAR(20) NOT NULL,
-    region        VARCHAR(20) NOT NULL,
-    codigo_postal INTEGER,
-    usuarios_id_usuario INTEGER NOT NULL,
-    CONSTRAINT direcciones_usuarios_fk
-    FOREIGN KEY (usuarios_id_usuario)
-    REFERENCES usuarios (id_usuario)
+CREATE TABLE IF NOT EXISTS addresses (
+                                         id_address SERIAL PRIMARY KEY,
+                                         address VARCHAR(50) NOT NULL,
+    city VARCHAR(20) NOT NULL,
+    region VARCHAR(20) NOT NULL,
+    zip_code INTEGER,
+    id_customer INTEGER NOT NULL,
+    CONSTRAINT fk_address_customer
+    FOREIGN KEY (id_customer)
+    REFERENCES customers (id_customer)
     );
 
--- Un usuario → una dirección (elimina este índice si quieres varias)
-CREATE UNIQUE INDEX IF NOT EXISTS direcciones_usuario_unico
-    ON direcciones (usuarios_id_usuario);
+-- Un cliente → una dirección
+CREATE UNIQUE INDEX IF NOT EXISTS ux_address_customer
+    ON addresses (id_customer);
 
-CREATE TABLE IF NOT EXISTS categorias (
-                                          id_categoria SERIAL PRIMARY KEY,
-                                          nombre      VARCHAR(30) NOT NULL,
-    descripcion VARCHAR(50) NOT NULL
+CREATE TABLE IF NOT EXISTS categories (
+                                          id_category SERIAL PRIMARY KEY,
+                                          category_name VARCHAR(30) NOT NULL,
+    description VARCHAR(50) NOT NULL
     );
 
-CREATE TABLE IF NOT EXISTS productos (
-                                         id_producto SERIAL PRIMARY KEY,
-                                         nombre      VARCHAR(30) NOT NULL,
-    precio      NUMERIC(10,2) NOT NULL,
-    stock       INTEGER NOT NULL,
-    descripcion VARCHAR(500),
-    imagen      BYTEA,
-    categorias_id_categoria INTEGER NOT NULL,
-    CONSTRAINT productos_categorias_fk
-    FOREIGN KEY (categorias_id_categoria)
-    REFERENCES categorias (id_categoria)
+CREATE TABLE IF NOT EXISTS products (
+                                        id_product SERIAL PRIMARY KEY,
+                                        product_name VARCHAR(30) NOT NULL,
+    price NUMERIC(10,2) NOT NULL,
+    stock INTEGER NOT NULL,
+    description VARCHAR(500),
+    image BYTEA,
+    id_category INTEGER NOT NULL,
+    CONSTRAINT fk_product_category
+    FOREIGN KEY (id_category)
+    REFERENCES categories (id_category)
     );
 
-CREATE TABLE IF NOT EXISTS pedidos (
-                                       id_pedido SERIAL PRIMARY KEY,
-                                       cantidad INTEGER NOT NULL,
-                                       fecha DATE NOT NULL,
-                                       total NUMERIC(10,2) NOT NULL,
-    productos_id_producto INTEGER NOT NULL,
-    usuarios_id_usuario INTEGER NOT NULL,
-    CONSTRAINT pedidos_productos_fk
-    FOREIGN KEY (productos_id_producto)
-    REFERENCES productos (id_producto),
-    CONSTRAINT pedidos_usuarios_fk
-    FOREIGN KEY (usuarios_id_usuario)
-    REFERENCES usuarios (id_usuario)
+CREATE TABLE IF NOT EXISTS orders (
+                                      id_order SERIAL PRIMARY KEY,
+                                      quantity INTEGER NOT NULL,
+                                      order_date DATE NOT NULL,
+                                      total NUMERIC(10,2) NOT NULL,
+    id_product INTEGER NOT NULL,
+    id_customer INTEGER NOT NULL,
+    CONSTRAINT fk_order_product
+    FOREIGN KEY (id_product)
+    REFERENCES products (id_product),
+    CONSTRAINT fk_order_customer
+    FOREIGN KEY (id_customer)
+    REFERENCES customers (id_customer)
     );
 
-CREATE TABLE IF NOT EXISTS colecciones (
-                                           id_coleccion SERIAL PRIMARY KEY,
-                                           nombre      VARCHAR(50) NOT NULL,
-    descripcion VARCHAR(100)
+CREATE TABLE IF NOT EXISTS collections (
+                                           id_collection SERIAL PRIMARY KEY,
+                                           collection_name VARCHAR(50) NOT NULL,
+    description VARCHAR(100)
     );
 
-CREATE TABLE IF NOT EXISTS producto_coleccion (
-                                                  productos_id_producto   INTEGER NOT NULL,
-                                                  colecciones_id_coleccion INTEGER NOT NULL,
-                                                  CONSTRAINT producto_coleccion_pk
-                                                  PRIMARY KEY (productos_id_producto, colecciones_id_coleccion),
-    CONSTRAINT pc_productos_fk
-    FOREIGN KEY (productos_id_producto)
-    REFERENCES productos (id_producto),
-    CONSTRAINT pc_colecciones_fk
-    FOREIGN KEY (colecciones_id_coleccion)
-    REFERENCES colecciones (id_coleccion)
+CREATE TABLE IF NOT EXISTS product_collections (
+                                                   id_product INTEGER NOT NULL,
+                                                   id_collection INTEGER NOT NULL,
+                                                   CONSTRAINT pk_product_collection
+                                                   PRIMARY KEY (id_product, id_collection),
+    CONSTRAINT fk_pc_product
+    FOREIGN KEY (id_product)
+    REFERENCES products (id_product),
+    CONSTRAINT fk_pc_collection
+    FOREIGN KEY (id_collection)
+    REFERENCES collections (id_collection)
     );

@@ -1,10 +1,10 @@
-package com.sa_ha1;
+package com.springboot_sa_ha1;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SaHa1ApplicationTests {
+class SpringbootSaHa1ApplicationTests {
 
 	@Test
 	void contextLoads() {
