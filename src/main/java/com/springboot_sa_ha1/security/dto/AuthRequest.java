@@ -1,0 +1,9 @@
+package com.springboot_sa_ha1.security.dto;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
+public record AuthRequest(
+        @Email @NotBlank String email,
+        @NotBlank String password
+) {}

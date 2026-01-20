@@ -3,13 +3,15 @@ package com.springboot_sa_ha1.modules.customers.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Table(name = "clientes")
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Customer {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +27,13 @@ public class Customer {
 
   private String phone;
 
-  @NotBlank
-  private String password;
+  @Column(name = "password_Hash", nullable = false, length = 100)
+  private String passwordHash;
 
+  @Column(name = "active", nullable = false)
+  private boolean active = true;
+
+  @Enumerated(EnumType.STRING)
+  @Column(name = "rol", nullable = false)
+  private RolCustomer rol = RolCustomer.ADMIN;
 }
