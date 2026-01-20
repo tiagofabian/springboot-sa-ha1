@@ -39,3 +39,5 @@ logging:
 #    #init:
 #      #mode: never   # cambiar a always si quieres cargar schema.sql
 #      #schema-locations: classpath:schema.sql
+
+

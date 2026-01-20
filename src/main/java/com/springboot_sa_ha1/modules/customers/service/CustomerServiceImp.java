@@ -42,7 +42,7 @@ public class CustomerServiceImp implements CustomerService {
         customer.setName(request.name());
         customer.setEmail(request.email());
         customer.setPhone(request.phone());
-        customer.setPassword(request.password());
+        customer.setPasswordHash(request.password());
         return mapper.toResponse(repository.save(customer));
     }
 
@@ -52,7 +52,7 @@ public class CustomerServiceImp implements CustomerService {
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
         customer.setName(request.name());
         customer.setEmail(request.email());
-        customer.setPassword(request.password());
+        customer.setPasswordHash(request.password());
         return mapper.toResponse(repository.save(customer));
     }
 
@@ -66,7 +66,7 @@ public class CustomerServiceImp implements CustomerService {
                 customer.getId(),
                 customer.getName(),
                 customer.getPhone(),
-                customer.getPassword()
+                customer.getPasswordHash()
         );
     }
     /*

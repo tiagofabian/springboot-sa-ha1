@@ -16,6 +16,9 @@ public class SpringbootSaHa1Application {
 		System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME",""));
 		System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD",""));
 
+		System.setProperty("JWT_SECRET",dotenv.get("JWT_SECRET",""));
+		System.setProperty("JWT_EXPIRATION_MS", "3600000");
 		SpringApplication.run(SpringbootSaHa1Application.class, args);
 	}
+
 }
