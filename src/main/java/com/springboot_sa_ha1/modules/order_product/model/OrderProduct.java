@@ -1,7 +1,7 @@
 package com.springboot_sa_ha1.modules.order_product.model;
 
 
-import com.springboot_sa_ha1.modules.collections.model.Collection;
+import com.springboot_sa_ha1.modules.orders.model.Order;
 import com.springboot_sa_ha1.modules.products.model.Product;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -17,14 +17,14 @@ public class OrderProduct {
   private OrderProductId id;
 
   @ManyToOne
-  @MapsId("idProduct")
+  @MapsId("productId")
   @JoinColumn(name = "id_product")
   private Product product;
 
   @ManyToOne
-  @MapsId("idCollection")
-  @JoinColumn(name = "id_collection")
-  private Collection collection;
+  @MapsId("orderId")
+  @JoinColumn(name = "id_order")
+  private Order order;
 
   private Integer quantity;
 

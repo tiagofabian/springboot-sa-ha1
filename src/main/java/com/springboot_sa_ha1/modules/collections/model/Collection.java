@@ -25,6 +25,4 @@ public class Collection {
 
   private String description;
 
-  @OneToMany(mappedBy = "collection")
-  private Set<OrderProduct> orderProducts = new HashSet<>();
 }

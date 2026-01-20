@@ -4,6 +4,7 @@ package com.springboot_sa_ha1.modules.products.model;
 import com.springboot_sa_ha1.modules.order_product.model.OrderProduct;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,8 +23,8 @@ public class Product {
   @NotBlank
   private String name;
 
-  @NotBlank
-  private String price;
+  @NotNull
+  private Long price;
 
   private Long stock;
 
@@ -32,7 +33,7 @@ public class Product {
 
   private Long id_category;
 
-  @OneToMany(mappedBy = "product")
+  @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
   private Set<OrderProduct> orderProducts = new HashSet<>();
 }
 

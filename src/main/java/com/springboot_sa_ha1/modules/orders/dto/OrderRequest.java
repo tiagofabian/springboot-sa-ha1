@@ -3,6 +3,6 @@ import java.time.LocalDate;
 
 public record OrderRequest(
     LocalDate orderDate,
-    long total,
+    Long total,
     Integer customerId
 ) {}

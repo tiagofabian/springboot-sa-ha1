@@ -17,10 +17,9 @@ import java.io.Serializable;
 public class OrderProductId implements Serializable {
 
   @Column(name = "id_product")
-  private Long idProduct;
+  private Long productId;
 
-  @Column(name = "id_collection")
-  private Long idCollection;
+  @Column(name = "id_order")
+  private Long orderId;
 
-  // Constructor, equals(), hashCode()
 }

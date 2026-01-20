@@ -7,6 +7,10 @@ import com.springboot_sa_ha1.modules.order_product.model.OrderProduct;
 import com.springboot_sa_ha1.modules.order_product.model.OrderProductId;
 import com.springboot_sa_ha1.modules.order_product.repository.OrderProductRepository;
 import com.springboot_sa_ha1.modules.order_product.service.OrderProductService;
+import com.springboot_sa_ha1.modules.orders.model.Order;
+import com.springboot_sa_ha1.modules.orders.repository.OrderRepository;
+import com.springboot_sa_ha1.modules.products.model.Product;
+import com.springboot_sa_ha1.modules.products.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,10 +22,14 @@ public class OrderProductServiceImp implements OrderProductService {
 
   private final OrderProductRepository repository;
   private final OrderProductMapper mapper;
+  private final ProductRepository productRepository;    // ← NUEVO
+  private final OrderRepository orderRepository;
 
-  public OrderProductServiceImp(OrderProductRepository repository, OrderProductMapper mapper) {
+  public OrderProductServiceImp(OrderProductRepository repository, ProductRepository productRepository, OrderRepository orderRepository, OrderProductMapper mapper) {
     this.repository = repository;
     this.mapper = mapper;
+    this.orderRepository = orderRepository;
+    this.productRepository= productRepository;
   }
 
   @Override
@@ -40,9 +48,21 @@ public class OrderProductServiceImp implements OrderProductService {
 
   @Override
   public OrderProductResponse guardar(OrderProductRequest request){
+
+    Order order = orderRepository.findById(request.orderId())
+        .orElseThrow(() -> new RuntimeException("Order no existe"));
+
+    Product product = productRepository.findById(request.productId())
+        .orElseThrow(() -> new RuntimeException("Product no existe"));
+
+    OrderProductId id = new OrderProductId(request.productId(), request.orderId());
     OrderProduct orderProduct = new OrderProduct();
+    orderProduct.setId(id);
+    orderProduct.setOrder(order);      // 🔑
+    orderProduct.setProduct(product);  // 🔑
     orderProduct.setQuantity(request.quantity());
     orderProduct.setPrice(request.price());
+
     return mapper.toResponse(repository.save(orderProduct));
   }
 

@@ -2,8 +2,8 @@ package com.springboot_sa_ha1.modules.orders.dto;
 import java.time.LocalDate;
 
 public record OrderResponse(
-        Integer id,
+        Long id,
         LocalDate orderDate,
-        long total,
+        Long total,
         Integer customerId
 ) {}
