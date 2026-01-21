@@ -8,6 +8,7 @@ import java.util.List;
 public interface CustomerService {
     List<CustomerResponse> listarTodos();
     CustomerResponse obtenerPorId(Long id);
+    CustomerResponse obtenerPorEmail(String email);
     CustomerResponse guardar(CustomerRequest request);
     CustomerResponse actualizar(Long id, CustomerRequest request);
     void eliminar(Long id);

@@ -1,8 +1,8 @@
-package com.springboot_sa_ha1.modules.order_product.service;
+package com.springboot_sa_ha1.modules.order_products.service;
 
-import com.springboot_sa_ha1.modules.order_product.dto.OrderProductRequest;
-import com.springboot_sa_ha1.modules.order_product.dto.OrderProductResponse;
-import com.springboot_sa_ha1.modules.order_product.model.OrderProductId;
+import com.springboot_sa_ha1.modules.order_products.dto.OrderProductRequest;
+import com.springboot_sa_ha1.modules.order_products.dto.OrderProductResponse;
+import com.springboot_sa_ha1.modules.order_products.model.OrderProductId;
 
 import java.util.List;
 

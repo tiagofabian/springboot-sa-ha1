@@ -1,6 +1,4 @@
-package com.springboot_sa_ha1.modules.order_product.dto;
-
-import com.springboot_sa_ha1.modules.order_product.model.OrderProductId;
+package com.springboot_sa_ha1.modules.order_products.dto;
 
 public record OrderProductRequest (
   Long productId,

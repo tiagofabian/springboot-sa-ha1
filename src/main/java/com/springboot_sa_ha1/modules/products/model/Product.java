@@ -1,7 +1,7 @@
 package com.springboot_sa_ha1.modules.products.model;
 
 
-import com.springboot_sa_ha1.modules.order_product.model.OrderProduct;
+import com.springboot_sa_ha1.modules.order_products.model.OrderProduct;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

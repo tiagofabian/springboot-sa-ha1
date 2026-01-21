@@ -1,7 +1,7 @@
-package com.springboot_sa_ha1.modules.order_product.mapper;
+package com.springboot_sa_ha1.modules.order_products.mapper;
 
-import com.springboot_sa_ha1.modules.order_product.dto.OrderProductResponse;
-import com.springboot_sa_ha1.modules.order_product.model.OrderProduct;
+import com.springboot_sa_ha1.modules.order_products.dto.OrderProductResponse;
+import com.springboot_sa_ha1.modules.order_products.model.OrderProduct;
 import org.springframework.stereotype.Component;
 
 @Component

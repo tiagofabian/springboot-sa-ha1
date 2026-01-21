@@ -1,12 +1,11 @@
-package com.springboot_sa_ha1.modules.order_product.service;
+package com.springboot_sa_ha1.modules.order_products.service;
 
-import com.springboot_sa_ha1.modules.order_product.dto.OrderProductRequest;
-import com.springboot_sa_ha1.modules.order_product.dto.OrderProductResponse;
-import com.springboot_sa_ha1.modules.order_product.mapper.OrderProductMapper;
-import com.springboot_sa_ha1.modules.order_product.model.OrderProduct;
-import com.springboot_sa_ha1.modules.order_product.model.OrderProductId;
-import com.springboot_sa_ha1.modules.order_product.repository.OrderProductRepository;
-import com.springboot_sa_ha1.modules.order_product.service.OrderProductService;
+import com.springboot_sa_ha1.modules.order_products.dto.OrderProductRequest;
+import com.springboot_sa_ha1.modules.order_products.dto.OrderProductResponse;
+import com.springboot_sa_ha1.modules.order_products.mapper.OrderProductMapper;
+import com.springboot_sa_ha1.modules.order_products.model.OrderProduct;
+import com.springboot_sa_ha1.modules.order_products.model.OrderProductId;
+import com.springboot_sa_ha1.modules.order_products.repository.OrderProductRepository;
 import com.springboot_sa_ha1.modules.orders.model.Order;
 import com.springboot_sa_ha1.modules.orders.repository.OrderRepository;
 import com.springboot_sa_ha1.modules.products.model.Product;

@@ -1,9 +1,9 @@
-package com.springboot_sa_ha1.modules.order_product.controller;
+package com.springboot_sa_ha1.modules.order_products.controller;
 
-import com.springboot_sa_ha1.modules.order_product.dto.OrderProductRequest;
-import com.springboot_sa_ha1.modules.order_product.dto.OrderProductResponse;
-import com.springboot_sa_ha1.modules.order_product.model.OrderProductId;
-import com.springboot_sa_ha1.modules.order_product.service.OrderProductService;
+import com.springboot_sa_ha1.modules.order_products.dto.OrderProductRequest;
+import com.springboot_sa_ha1.modules.order_products.dto.OrderProductResponse;
+import com.springboot_sa_ha1.modules.order_products.model.OrderProductId;
+import com.springboot_sa_ha1.modules.order_products.service.OrderProductService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

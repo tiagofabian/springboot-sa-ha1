@@ -1,4 +1,4 @@
-package com.springboot_sa_ha1.modules.order_product.model;
+package com.springboot_sa_ha1.modules.order_products.model;
 
 
 import com.springboot_sa_ha1.modules.orders.model.Order;

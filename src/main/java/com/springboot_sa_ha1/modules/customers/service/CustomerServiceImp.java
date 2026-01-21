@@ -37,6 +37,13 @@ public class CustomerServiceImp implements CustomerService {
     }
 
     @Override
+    public CustomerResponse obtenerPorEmail(String email) {
+        return repository.findByEmailIgnoreCase(email)
+            .map(mapper::toResponse)
+            .orElse(null); // devuelve null si no existe
+    }
+
+    @Override
     public CustomerResponse guardar(CustomerRequest request){
         Customer customer = new Customer();
         customer.setName(request.name());

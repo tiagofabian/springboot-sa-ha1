@@ -30,6 +30,15 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.obtenerPorId(id));
     }
 
+    @GetMapping("/{email:.+}")
+    public ResponseEntity<CustomerResponse> obtenerPorEmail(@PathVariable String email) {
+        CustomerResponse customer = customerService.obtenerPorEmail(email);
+        if (customer == null) {
+            return ResponseEntity.notFound().build(); // 404
+        }
+        return ResponseEntity.ok(customer);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<CustomerResponse> crear(@Valid @RequestBody CustomerRequest request){
         return ResponseEntity.ok(customerService.guardar(request));
