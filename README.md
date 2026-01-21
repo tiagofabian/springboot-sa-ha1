@@ -1,6 +1,6 @@
 # SA-HA1
 
-Aplicación backend desarrollada con **Spring Boot** que modela un sistema básico de comercio electrónico. Incluye gestión de usuarios, direcciones, categorías, productos, pedidos y colecciones, utilizando **PostgreSQL** como base de datos.
+Aplicación backend desarrollada con **Spring Boot** que modela un sistema básico de comercio electrónico. Incluye gestión de usuarios, direcciones, categorías, productos, pedidos y colecciones, utilizando **PostgreSQL** como base de datos. 
 
 ---
 
