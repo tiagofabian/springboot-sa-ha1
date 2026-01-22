@@ -13,7 +13,8 @@ public class ProductMapper {
         product.getStock(),
         product.getDescription(),
         product.getImageUrl(),
-        product.getId_category()
+        product.getId_category(),
+        product.getId_collection()
     );
   }
 }

@@ -52,6 +52,7 @@ public class ProductServiceImp implements ProductService {
     Product.setDescription(request.description());
     Product.setImageUrl(request.imageUrl());
     Product.setId_category(request.id_category());
+    Product.setId_collection(request.id_collection());
     return mapper.toResponse(repository.save(Product));
   }
 

@@ -7,5 +7,6 @@ public record ProductResponse(
     Long stock,
     String description,
     String imageUrl,
-    Long id_category
+    Long id_category,
+    Long id_collection
 ) {}

@@ -35,6 +35,8 @@ public class Product {
 
   private Long id_category;
 
+  private Long id_collection;
+
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
   private Set<OrderProduct> orderProducts = new HashSet<>();
 }
