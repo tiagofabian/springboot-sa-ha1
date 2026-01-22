@@ -1,0 +1,127 @@
+paths:
+  /auth/login:
+    post:
+      summary: Autenticación de usuario
+      description: Inicia sesión con credenciales válidas y devuelve un token JWT.
+      tags: [Autenticación]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
+      responses:
+        '200':
+          description: Autenticación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Credenciales inválidas
+
+  /auth/register:
+    post:
+      summary: Registro de nuevo usuario
+      description: Registra un nuevo usuario en el sistema y devuelve un token JWT.
+      tags: [Autenticación]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '200':
+          description: Registro exitoso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Datos inválidos
+
+components:
+  schemas:
+    AuthRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        password:
+          type: string
+          format: password
+          example: mySecurePassword
+      required:
+        - email
+        - password
+
+    RegisterRequest:
+      type: object
+      properties:
+        firstname:
+          type: string
+          example: Juan
+        lastname:
+          type: string
+          example: Pérez
+        email:
+          type: string
+          format: email
+          example: juan.perez@example.com
+        password:
+          type: string
+          format: password
+          example: mySecurePassword
+        rut:
+          type: string
+          example: "12.345.678-9"
+      required:
+        - firstname
+        - lastname
+        - email
+        - password
+        - rut
+
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT de autenticación
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        customer:
+          $ref: '#/components/schemas/Customer'
+
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        firstname:
+          type: string
+          example: Juan
+        lastname:
+          type: string
+          example: Pérez
+        email:
+          type: string
+          example: juan.perez@example.com
+        rut:
+          type: string
+          example: "12.345.678-9"
+        role:
+          $ref: '#/components/schemas/RolCustomer'
+
+    RolCustomer:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: CLIENTE

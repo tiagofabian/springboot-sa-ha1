@@ -1,0 +1,148 @@
+paths:
+  /api/addresses:
+    get:
+      summary: Obtener todas las direcciones
+      description: Retorna una lista de todas las direcciones registradas en el sistema.
+      tags: [Direcciones]
+      responses:
+        '200':
+          description: Lista de direcciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AddressResponse'
+
+    post:
+      summary: Crear una nueva dirección
+      description: Registra una nueva dirección asociada a un cliente.
+      tags: [Direcciones]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressRequest'
+      responses:
+        '200':
+          description: Dirección creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+
+  /api/addresses/{id}:
+    get:
+      summary: Obtener dirección por ID
+      description: Retorna los detalles de una dirección específica.
+      tags: [Direcciones]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la dirección
+      responses:
+        '200':
+          description: Dirección encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+
+    put:
+      summary: Actualizar dirección
+      description: Actualiza los datos de una dirección existente.
+      tags: [Direcciones]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la dirección
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressRequest'
+      responses:
+        '200':
+          description: Dirección actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+
+    delete:
+      summary: Eliminar dirección
+      description: Elimina una dirección del sistema.
+      tags: [Direcciones]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la dirección
+      responses:
+        '204':
+          description: Dirección eliminada exitosamente
+
+components:
+  schemas:
+    AddressRequest:
+      type: object
+      properties:
+        street:
+          type: string
+          example: Avenida Siempre Viva
+        number:
+          type: string
+          example: 742
+        city:
+          type: string
+          example: Springfield
+        region:
+          type: string
+          example: Región Metropolitana
+        country:
+          type: string
+          example: Chile
+        postalCode:
+          type: string
+          example: 8320000
+        customerId:
+          type: integer
+          example: 1
+      required:
+        - street
+        - number
+        - city
+        - region
+        - country
+        - customerId
+
+    AddressResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+        street:
+          type: string
+        number:
+          type: string
+        city:
+          type: string
+        region:
+          type: string
+        country:
+          type: string
+        postalCode:
+          type: string
+        customerId:
+          type: integer

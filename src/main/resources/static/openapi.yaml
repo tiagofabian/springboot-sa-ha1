@@ -1,0 +1,922 @@
+openapi: 3.1.1
+info:
+  title: Hoseki API
+  version: 1.0.1
+  description: Documentación para los distintos módulos de la joyeria Hoseki
+paths:
+  /api/addresses:
+    get:
+      summary: Obtener todas las direcciones
+      description: Retorna una lista de todas las direcciones registradas en el sistema.
+      tags:
+      - Direcciones
+      responses:
+        '200':
+          description: Lista de direcciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AddressResponse'
+    post:
+      summary: Crear una nueva dirección
+      description: Registra una nueva dirección asociada a un cliente.
+      tags:
+      - Direcciones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressRequest'
+      responses:
+        '200':
+          description: Dirección creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+  /api/addresses/{id}:
+    get:
+      summary: Obtener dirección por ID
+      description: Retorna los detalles de una dirección específica.
+      tags:
+      - Direcciones
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la dirección
+      responses:
+        '200':
+          description: Dirección encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+    put:
+      summary: Actualizar dirección
+      description: Actualiza los datos de una dirección existente.
+      tags:
+      - Direcciones
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la dirección
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddressRequest'
+      responses:
+        '200':
+          description: Dirección actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AddressResponse'
+    delete:
+      summary: Eliminar dirección
+      description: Elimina una dirección del sistema.
+      tags:
+      - Direcciones
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la dirección
+      responses:
+        '204':
+          description: Dirección eliminada exitosamente
+  /auth/login:
+    post:
+      summary: Autenticación de usuario
+      description: Inicia sesión con credenciales válidas y devuelve un token JWT.
+      tags:
+      - Autenticación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
+      responses:
+        '200':
+          description: Autenticación exitosa
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Credenciales inválidas
+  /auth/register:
+    post:
+      summary: Registro de nuevo usuario
+      description: Registra un nuevo usuario en el sistema y devuelve un token JWT.
+      tags:
+      - Autenticación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+      responses:
+        '200':
+          description: Registro exitoso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Datos inválidos
+  /api/categories:
+    get:
+      summary: Obtener todas las categorías
+      description: Retorna una lista de todas las categorías disponibles.
+      tags:
+      - Categorías
+      responses:
+        '200':
+          description: Lista de categorías
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryResponse'
+    post:
+      summary: Crear una nueva categoría
+      description: Registra una nueva categoría para clasificar productos.
+      tags:
+      - Categorías
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+      responses:
+        '200':
+          description: Categoría creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+  /api/categories/{id}:
+    get:
+      summary: Obtener categoría por ID
+      description: Devuelve los detalles de una categoría específica.
+      tags:
+      - Categorías
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la categoría
+      responses:
+        '200':
+          description: Categoría encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+    put:
+      summary: Actualizar categoría
+      description: Actualiza la información de una categoría existente.
+      tags:
+      - Categorías
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la categoría
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+      responses:
+        '200':
+          description: Categoría actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+    delete:
+      summary: Eliminar categoría
+      description: Elimina una categoría del sistema.
+      tags:
+      - Categorías
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la categoría
+      responses:
+        '204':
+          description: Categoría eliminada exitosamente
+  /api/collections:
+    get:
+      summary: Obtener todas las colecciones
+      description: Devuelve todas las colecciones registradas en el sistema.
+      tags:
+      - Colecciones
+      responses:
+        '200':
+          description: Lista de colecciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CollectionResponse'
+    post:
+      summary: Crear una nueva colección
+      description: Registra una nueva colección de productos o elementos.
+      tags:
+      - Colecciones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollectionRequest'
+      responses:
+        '200':
+          description: Colección creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+  /api/collections/{id}:
+    get:
+      summary: Obtener colección por ID
+      description: Devuelve los detalles de una colección específica.
+      tags:
+      - Colecciones
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la colección
+      responses:
+        '200':
+          description: Colección encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+    put:
+      summary: Actualizar colección
+      description: Actualiza la información de una colección existente.
+      tags:
+      - Colecciones
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la colección
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollectionRequest'
+      responses:
+        '200':
+          description: Colección actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+    delete:
+      summary: Eliminar colección
+      description: Elimina una colección por su ID.
+      tags:
+      - Colecciones
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la colección
+      responses:
+        '204':
+          description: Colección eliminada exitosamente
+  /api/customers:
+    get:
+      summary: Obtener todos los clientes
+      description: Retorna una lista de todos los clientes registrados.
+      tags:
+      - Clientes
+      responses:
+        '200':
+          description: Lista de clientes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerResponse'
+    post:
+      summary: Crear un nuevo cliente
+      description: Registra un nuevo cliente.
+      tags:
+      - Clientes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+      responses:
+        '200':
+          description: Cliente creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+  /api/customers/{id}:
+    get:
+      summary: Obtener cliente por ID
+      description: Retorna los datos de un cliente específico.
+      tags:
+      - Clientes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID del cliente
+      responses:
+        '200':
+          description: Cliente encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+    put:
+      summary: Actualizar cliente
+      description: Actualiza la información de un cliente existente.
+      tags:
+      - Clientes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID del cliente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+      responses:
+        '200':
+          description: Cliente actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+    delete:
+      summary: Eliminar cliente
+      description: Elimina un cliente por su ID.
+      tags:
+      - Clientes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID del cliente
+      responses:
+        '204':
+          description: Cliente eliminado exitosamente
+  /api/orders:
+    get:
+      summary: Obtener todas las órdenes
+      description: Devuelve una lista de todas las órdenes registradas.
+      tags:
+      - Órdenes
+      responses:
+        '200':
+          description: Lista de órdenes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderResponse'
+    post:
+      summary: Crear una nueva orden
+      description: Registra una nueva orden entre productos o cuentas.
+      tags:
+      - Órdenes
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+      responses:
+        '200':
+          description: Orden creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+  /api/orders/{id}:
+    get:
+      summary: Obtener orden por ID
+      description: Devuelve los detalles de una orden específica.
+      tags:
+      - Órdenes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la orden
+      responses:
+        '200':
+          description: Orden encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+    put:
+      summary: Actualizar orden
+      description: Actualiza los detalles de una orden existente.
+      tags:
+      - Órdenes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la orden
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+      responses:
+        '200':
+          description: Orden actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderResponse'
+    delete:
+      summary: Eliminar orden
+      description: Elimina una orden del sistema.
+      tags:
+      - Órdenes
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID de la orden
+      responses:
+        '204':
+          description: Orden eliminada exitosamente
+  /api/products:
+    get:
+      summary: Obtener todos los productos
+      description: Devuelve una lista de todos los productos disponibles.
+      tags:
+      - Productos
+      responses:
+        '200':
+          description: Lista de productos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductResponse'
+    post:
+      summary: Crear un nuevo producto
+      description: Registra un nuevo producto en el sistema.
+      tags:
+      - Productos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+      responses:
+        '200':
+          description: Producto creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+  /api/products/{id}:
+    get:
+      summary: Obtener producto por ID
+      description: Devuelve los detalles de un producto específico.
+      tags:
+      - Productos
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID del producto
+      responses:
+        '200':
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+    put:
+      summary: Actualizar producto
+      description: Actualiza la información de un producto existente.
+      tags:
+      - Productos
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID del producto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+      responses:
+        '200':
+          description: Producto actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+    delete:
+      summary: Eliminar producto
+      description: Elimina un producto del sistema.
+      tags:
+      - Productos
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID del producto
+      responses:
+        '204':
+          description: Producto eliminado exitosamente
+components:
+  schemas:
+    AddressRequest:
+      type: object
+      properties:
+        street:
+          type: string
+          example: Avenida Siempre Viva
+        number:
+          type: string
+          example: 742
+        city:
+          type: string
+          example: Springfield
+        region:
+          type: string
+          example: Región Metropolitana
+        country:
+          type: string
+          example: Chile
+        postalCode:
+          type: string
+          example: 8320000
+        customerId:
+          type: integer
+          example: 1
+      required:
+      - street
+      - number
+      - city
+      - region
+      - country
+      - customerId
+    AddressResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 10
+        street:
+          type: string
+        number:
+          type: string
+        city:
+          type: string
+        region:
+          type: string
+        country:
+          type: string
+        postalCode:
+          type: string
+        customerId:
+          type: integer
+    AuthRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        password:
+          type: string
+          format: password
+          example: mySecurePassword
+      required:
+      - email
+      - password
+    RegisterRequest:
+      type: object
+      properties:
+        firstname:
+          type: string
+          example: Juan
+        lastname:
+          type: string
+          example: Pérez
+        email:
+          type: string
+          format: email
+          example: juan.perez@example.com
+        password:
+          type: string
+          format: password
+          example: mySecurePassword
+        rut:
+          type: string
+          example: 12.345.678-9
+      required:
+      - firstname
+      - lastname
+      - email
+      - password
+      - rut
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT de autenticación
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        customer:
+          $ref: '#/components/schemas/Customer'
+    Customer:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        firstname:
+          type: string
+          example: Juan
+        lastname:
+          type: string
+          example: Pérez
+        email:
+          type: string
+          example: juan.perez@example.com
+        rut:
+          type: string
+          example: 12.345.678-9
+        role:
+          $ref: '#/components/schemas/RolCustomer'
+    RolCustomer:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+        name:
+          type: string
+          example: CLIENTE
+    CategoryRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Cuentas Bancarias
+        description:
+          type: string
+          example: Categoría de productos bancarios como cuentas corrientes o de ahorro.
+      required:
+      - name
+    CategoryResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+        description:
+          type: string
+    CollectionRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Colección Bancaria Premium
+        description:
+          type: string
+          example: Conjunto de productos exclusivos para clientes premium
+        customerId:
+          type: integer
+          example: 1
+      required:
+      - name
+      - customerId
+    CollectionResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+        description:
+          type: string
+        customerId:
+          type: integer
+    CustomerRequest:
+      type: object
+      properties:
+        firstname:
+          type: string
+          example: Ana
+        lastname:
+          type: string
+          example: Gómez
+        email:
+          type: string
+          format: email
+          example: ana.gomez@example.com
+        rut:
+          type: string
+          example: 12.345.678-9
+        roleId:
+          type: integer
+          example: 2
+      required:
+      - firstname
+      - lastname
+      - email
+      - rut
+      - roleId
+    CustomerResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        firstname:
+          type: string
+          example: Ana
+        lastname:
+          type: string
+          example: Gómez
+        email:
+          type: string
+          example: ana.gomez@example.com
+        rut:
+          type: string
+          example: 12.345.678-9
+        role:
+          $ref: '#/components/schemas/RolCustomer'
+    OrderRequest:
+      type: object
+      properties:
+        originCustomerId:
+          type: integer
+          example: 1
+        destinationCustomerId:
+          type: integer
+          example: 2
+        productId:
+          type: integer
+          example: 5
+        amount:
+          type: number
+          format: double
+          example: 10000.0
+        concept:
+          type: string
+          example: Transferencia de fondos
+      required:
+      - originCustomerId
+      - destinationCustomerId
+      - productId
+      - amount
+    OrderResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        originCustomerId:
+          type: integer
+        destinationCustomerId:
+          type: integer
+        productId:
+          type: integer
+        amount:
+          type: number
+          format: double
+        concept:
+          type: string
+        status:
+          type: string
+          enum:
+          - PENDIENTE
+          - PROCESADA
+          - RECHAZADA
+        createdAt:
+          type: string
+          format: date-time
+    ProductRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Cuenta Corriente
+        description:
+          type: string
+          example: Cuenta bancaria con línea de crédito
+        type:
+          type: string
+          enum:
+          - CUENTA_CORRIENTE
+          - CUENTA_VISTA
+          - CUENTA_AHORRO
+        status:
+          type: string
+          enum:
+          - ACTIVO
+          - INACTIVO
+      required:
+      - name
+      - type
+      - status
+    ProductResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Cuenta Corriente
+        description:
+          type: string
+          example: Cuenta bancaria con línea de crédito
+        type:
+          type: string
+          example: CUENTA_CORRIENTE
+        status:
+          type: string
+          example: ACTIVO

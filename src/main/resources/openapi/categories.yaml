@@ -1,0 +1,118 @@
+paths:
+  /api/categories:
+    get:
+      summary: Obtener todas las categorías
+      description: Retorna una lista de todas las categorías disponibles.
+      tags: [Categorías]
+      responses:
+        '200':
+          description: Lista de categorías
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CategoryResponse'
+
+    post:
+      summary: Crear una nueva categoría
+      description: Registra una nueva categoría para clasificar productos.
+      tags: [Categorías]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+      responses:
+        '200':
+          description: Categoría creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+
+  /api/categories/{id}:
+    get:
+      summary: Obtener categoría por ID
+      description: Devuelve los detalles de una categoría específica.
+      tags: [Categorías]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la categoría
+      responses:
+        '200':
+          description: Categoría encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+
+    put:
+      summary: Actualizar categoría
+      description: Actualiza la información de una categoría existente.
+      tags: [Categorías]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la categoría
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CategoryRequest'
+      responses:
+        '200':
+          description: Categoría actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryResponse'
+
+    delete:
+      summary: Eliminar categoría
+      description: Elimina una categoría del sistema.
+      tags: [Categorías]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la categoría
+      responses:
+        '204':
+          description: Categoría eliminada exitosamente
+
+components:
+  schemas:
+    CategoryRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Cuentas Bancarias
+        description:
+          type: string
+          example: Categoría de productos bancarios como cuentas corrientes o de ahorro.
+      required:
+        - name
+
+    CategoryResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+        description:
+          type: string

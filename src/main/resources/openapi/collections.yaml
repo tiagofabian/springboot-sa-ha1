@@ -1,0 +1,124 @@
+paths:
+  /api/collections:
+    get:
+      summary: Obtener todas las colecciones
+      description: Devuelve todas las colecciones registradas en el sistema.
+      tags: [Colecciones]
+      responses:
+        '200':
+          description: Lista de colecciones
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CollectionResponse'
+
+    post:
+      summary: Crear una nueva colección
+      description: Registra una nueva colección de productos o elementos.
+      tags: [Colecciones]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollectionRequest'
+      responses:
+        '200':
+          description: Colección creada exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+
+  /api/collections/{id}:
+    get:
+      summary: Obtener colección por ID
+      description: Devuelve los detalles de una colección específica.
+      tags: [Colecciones]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la colección
+      responses:
+        '200':
+          description: Colección encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+
+    put:
+      summary: Actualizar colección
+      description: Actualiza la información de una colección existente.
+      tags: [Colecciones]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la colección
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CollectionRequest'
+      responses:
+        '200':
+          description: Colección actualizada correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionResponse'
+
+    delete:
+      summary: Eliminar colección
+      description: Elimina una colección por su ID.
+      tags: [Colecciones]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la colección
+      responses:
+        '204':
+          description: Colección eliminada exitosamente
+
+components:
+  schemas:
+    CollectionRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Colección Bancaria Premium
+        description:
+          type: string
+          example: Conjunto de productos exclusivos para clientes premium
+        customerId:
+          type: integer
+          example: 1
+      required:
+        - name
+        - customerId
+
+    CollectionResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+        description:
+          type: string
+        customerId:
+          type: integer

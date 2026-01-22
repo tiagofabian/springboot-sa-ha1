@@ -1,0 +1,152 @@
+paths:
+  /api/customers:
+    get:
+      summary: Obtener todos los clientes
+      description: Retorna una lista de todos los clientes registrados.
+      tags: [Clientes]
+      responses:
+        '200':
+          description: Lista de clientes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerResponse'
+
+    post:
+      summary: Crear un nuevo cliente
+      description: Registra un nuevo cliente.
+      tags: [Clientes]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+      responses:
+        '200':
+          description: Cliente creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+
+  /api/customers/{id}:
+    get:
+      summary: Obtener cliente por ID
+      description: Retorna los datos de un cliente específico.
+      tags: [Clientes]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del cliente
+      responses:
+        '200':
+          description: Cliente encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+
+    put:
+      summary: Actualizar cliente
+      description: Actualiza la información de un cliente existente.
+      tags: [Clientes]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del cliente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerRequest'
+      responses:
+        '200':
+          description: Cliente actualizado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerResponse'
+
+    delete:
+      summary: Eliminar cliente
+      description: Elimina un cliente por su ID.
+      tags: [Clientes]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del cliente
+      responses:
+        '204':
+          description: Cliente eliminado exitosamente
+
+components:
+  schemas:
+    CustomerRequest:
+      type: object
+      properties:
+        firstname:
+          type: string
+          example: Ana
+        lastname:
+          type: string
+          example: Gómez
+        email:
+          type: string
+          format: email
+          example: ana.gomez@example.com
+        rut:
+          type: string
+          example: "12.345.678-9"
+        roleId:
+          type: integer
+          example: 2
+      required:
+        - firstname
+        - lastname
+        - email
+        - rut
+        - roleId
+
+    CustomerResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        firstname:
+          type: string
+          example: Ana
+        lastname:
+          type: string
+          example: Gómez
+        email:
+          type: string
+          example: ana.gomez@example.com
+        rut:
+          type: string
+          example: "12.345.678-9"
+        role:
+          $ref: '#/components/schemas/RolCustomer'
+
+    RolCustomer:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+        name:
+          type: string
+          example: CLIENTE
