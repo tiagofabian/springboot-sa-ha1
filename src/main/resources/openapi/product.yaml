@@ -1,9 +1,9 @@
 paths:
-  /api/products:
+  /api/product:
     get:
       summary: Obtener todos los productos
       description: Devuelve una lista de todos los productos disponibles.
-      tags: [Productos]
+      tags: [Producto]
       responses:
         '200':
           description: Lista de productos
@@ -17,7 +17,7 @@ paths:
     post:
       summary: Crear un nuevo producto
       description: Registra un nuevo producto en el sistema.
-      tags: [Productos]
+      tags: [Producto]
       requestBody:
         required: true
         content:
@@ -32,11 +32,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductResponse'
 
-  /api/products/{id}:
+  /api/product/{id}:
     get:
       summary: Obtener producto por ID
       description: Devuelve los detalles de un producto específico.
-      tags: [Productos]
+      tags: [Producto]
       parameters:
         - name: id
           in: path
@@ -55,7 +55,7 @@ paths:
     put:
       summary: Actualizar producto
       description: Actualiza la información de un producto existente.
-      tags: [Productos]
+      tags: [Producto]
       parameters:
         - name: id
           in: path
@@ -80,7 +80,7 @@ paths:
     delete:
       summary: Eliminar producto
       description: Elimina un producto del sistema.
-      tags: [Productos]
+      tags: [Producto]
       parameters:
         - name: id
           in: path
