@@ -51,6 +51,10 @@ public class Product {
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
   private Set<ProductCollection> productCollections = new HashSet<>();
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "id_category", insertable = false, updatable = false)
+  private Category category;
+
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
   private Set<OrderProduct> orderProducts = new HashSet<>();
 }
