@@ -4,6 +4,7 @@ package com.springboot_sa_ha1.modules.categories.controller;
 import com.springboot_sa_ha1.modules.categories.dto.CategoryRequest;
 import com.springboot_sa_ha1.modules.categories.dto.CategoryResponse;
 import com.springboot_sa_ha1.modules.categories.service.CategoryService;
+import com.springboot_sa_ha1.modules.products.dto.ProductResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

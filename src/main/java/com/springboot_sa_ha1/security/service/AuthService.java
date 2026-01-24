@@ -55,4 +55,34 @@ public class AuthService {
         String jwt = jwtService.generateToken(nuevo.getEmail());
         return new AuthResponse(nuevo.getId(), nuevo.getName(), nuevo.getEmail(), nuevo.getRol(), jwt);
     }
+
+    public AuthResponse updateUser(Long userId, String name, String email, RolCustomer rol, Boolean active) {
+        Customer user = customersRepository.findById(userId)
+            .orElseThrow(() -> new BadRequestException("Usuario no encontrado"));
+
+        // Validaciones opcionales
+        if (email != null && !email.equalsIgnoreCase(user.getEmail())) {
+            if (customersRepository.existsByEmailIgnoreCase(email)) {
+                throw new BadRequestException("El email ya está en uso");
+            }
+            user.setEmail(email);
+        }
+
+        if (name != null) user.setName(name);
+        if (rol != null) user.setRol(rol);
+        if (active != null) user.setActive(active);
+
+        customersRepository.save(user);
+
+        // No regeneramos JWT, solo devolvemos info actualizada
+        return new AuthResponse(user.getId(), user.getName(), user.getEmail(), user.getRol(), null);
+    }
+
+    public void disableUser(Long userId) {
+        Customer user = customersRepository.findById(userId)
+            .orElseThrow(() -> new BadRequestException("Usuario no encontrado"));
+
+        user.setActive(false);
+        customersRepository.save(user);
+    }
 }

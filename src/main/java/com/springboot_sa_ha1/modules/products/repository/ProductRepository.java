@@ -14,4 +14,17 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
               OR LOWER(p.description) LIKE LOWER(CONCAT('%', :term, '%'))
            """)
   List<Product> searchByTerm(@Param("term") String term);
+
+  // 🔹 Productos por categoría (slug)
+  List<Product> findByCategorySlug(String slug);
+
+  // 🔹 Productos por colección (slug)
+  @Query("""
+    SELECT DISTINCT p
+    FROM Product p
+    JOIN p.productCollections pc
+    JOIN pc.collection c
+    WHERE c.slug = :slug
+  """)
+  List<Product> findByCollectionSlug(@Param("slug") String slug);
 }
