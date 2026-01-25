@@ -15,12 +15,14 @@ public class ProductCollection {
   @EmbeddedId
   private ProductCollectionId id;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @MapsId("productId")
+  @JoinColumn(name = "product_id")
   private Product product;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @MapsId("collectionId")
+  @JoinColumn(name = "collection_id")
   private Collection collection;
 }
 

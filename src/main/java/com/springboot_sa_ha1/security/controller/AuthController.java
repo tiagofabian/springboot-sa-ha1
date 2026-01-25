@@ -3,14 +3,12 @@ package com.springboot_sa_ha1.security.controller;
 import com.springboot_sa_ha1.security.dto.AuthRequest;
 import com.springboot_sa_ha1.security.dto.AuthResponse;
 import com.springboot_sa_ha1.security.dto.RegisterRequest;
+import com.springboot_sa_ha1.security.dto.UpdateUserRequest;
 import com.springboot_sa_ha1.security.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -27,5 +25,20 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest req) {
         return ResponseEntity.ok(authService.register(req));
+    }
+
+    @PutMapping("/user/{id}")
+    public ResponseEntity<AuthResponse> updateUser(
+        @PathVariable Long id,
+        @RequestBody UpdateUserRequest req
+    ) {
+        AuthResponse updated = authService.updateUser(id, req.name(), req.email(), req.rol(), req.active());
+        return ResponseEntity.ok(updated);
+    }
+
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<Void> deactivateUser(@PathVariable Long id) {
+        authService.disableUser(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -2,11 +2,15 @@ package com.springboot_sa_ha1.modules.collections.service;
 
 import com.springboot_sa_ha1.modules.collections.dto.CollectionRequest;
 import com.springboot_sa_ha1.modules.collections.dto.CollectionResponse;
+import com.springboot_sa_ha1.modules.collections.dto.CollectionWithProductsResponse;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
 public interface CollectionService {
   List<CollectionResponse> listarTodos();
+  List<CollectionResponse> obtenerColeccionesPorSlug(List<String> slugs);
+  List<CollectionWithProductsResponse> obtenerColeccionesConProductoPorSlug(List<String> slugs);
   CollectionResponse obtenerPorId(Long id);
   CollectionResponse guardar(CollectionRequest request);
   CollectionResponse actualizar(Long id, CollectionRequest request);

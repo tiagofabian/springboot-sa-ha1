@@ -34,7 +34,7 @@ public class CategoryServiceImp implements CategoryService {
   public CategoryResponse obtenerPorId(Long id){
     return repository.findById(id)
         .map(mapper::toResponse)
-        .orElseThrow(() -> new RuntimeException("Colección no encontrada"));
+        .orElseThrow(() -> new RuntimeException("Categoria no encontrada"));
   }
 
   @Override
@@ -48,15 +48,17 @@ public class CategoryServiceImp implements CategoryService {
     category.setName(request.name());
     category.setDescription(request.description());
     category.setSlug(normalizedSlug);
+    category.setImage(request.image());
     return mapper.toResponse(repository.save(category));
   }
 
   @Override
   public CategoryResponse actualizar(Long id, CategoryRequest request){
     Category category = repository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Colección no encontrada"));
+        .orElseThrow(() -> new RuntimeException("Categoria no encontrada"));
     category.setName(request.name());
     category.setDescription(request.description());
+    category.setImage(request.image());
 
     return mapper.toResponse(repository.save(category));
   }

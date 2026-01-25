@@ -15,7 +15,6 @@ import java.util.Set;
 @Table(name = "colecciones")
 @Getter
 @Setter
-
 public class Collection {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +27,12 @@ public class Collection {
 
   private String slug;
 
-  @OneToMany(mappedBy = "collection", cascade = CascadeType.ALL, orphanRemoval = true)
+  private String image;
+
+  @OneToMany(
+      mappedBy = "collection",
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL
+  )
   private Set<ProductCollection> productCollections = new HashSet<>();
 }

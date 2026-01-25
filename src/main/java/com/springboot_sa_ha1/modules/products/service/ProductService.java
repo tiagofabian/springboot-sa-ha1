@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface ProductService {
     List<ProductResponse> searchByTerm(String term);
+    List<ProductResponse> listarPorCategoriaSlug(String slug);
+    List<ProductResponse> listarPorColeccionSlug(String slug);
     List<ProductResponse> listarTodos();
     ProductResponse obtenerPorId(Long id);
     ProductResponse guardar(ProductRequest request);

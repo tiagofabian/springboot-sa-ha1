@@ -6,12 +6,15 @@ import com.springboot_sa_ha1.modules.collections.dto.CollectionResponse;
 import com.springboot_sa_ha1.modules.collections.model.Collection;
 import com.springboot_sa_ha1.modules.collections.repository.CollectionRepository;
 import com.springboot_sa_ha1.modules.product_collections.model.ProductCollection;
+import com.springboot_sa_ha1.modules.product_collections.model.ProductCollectionId;
+import com.springboot_sa_ha1.modules.product_collections.repository.ProductCollectionRepository;
 import com.springboot_sa_ha1.modules.productimages.model.ProductImage;
 import com.springboot_sa_ha1.modules.products.dto.ProductRequest;
 import com.springboot_sa_ha1.modules.products.dto.ProductResponse;
 import com.springboot_sa_ha1.modules.products.mapper.ProductMapper;
 import com.springboot_sa_ha1.modules.products.model.Product;
 import com.springboot_sa_ha1.modules.products.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,17 +26,20 @@ public class ProductServiceImp implements ProductService {
   private final ProductRepository productRepository;
   private final CategoryRepository categoryRepository;
   private final CollectionRepository collectionRepository;
+  private final ProductCollectionRepository productCollectionRepository;
   private final ProductMapper mapper;
 
   public ProductServiceImp(
       ProductRepository productRepository,
       CategoryRepository categoryRepository,
       CollectionRepository collectionRepository,
+      ProductCollectionRepository productCollectionRepository,
       ProductMapper mapper
   ) {
     this.productRepository = productRepository;
     this.categoryRepository = categoryRepository;
     this.collectionRepository = collectionRepository;
+    this.productCollectionRepository = productCollectionRepository;
     this.mapper = mapper;
   }
 
@@ -42,6 +48,22 @@ public class ProductServiceImp implements ProductService {
     return productRepository.searchByTerm(term).stream()
         .map(mapper::toResponse)
         .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<ProductResponse> listarPorCategoriaSlug(String slug) {
+    return productRepository.findByCategorySlug(slug)
+        .stream()
+        .map(mapper::toResponse)
+        .toList();
+  }
+
+  @Override
+  public List<ProductResponse> listarPorColeccionSlug(String slug) {
+    return productRepository.findByCollectionSlug(slug)
+        .stream()
+        .map(mapper::toResponse)
+        .toList();
   }
 
   @Override
@@ -59,11 +81,14 @@ public class ProductServiceImp implements ProductService {
   }
 
   @Override
+  @Transactional
   public ProductResponse guardar(ProductRequest request) {
-    // Buscar la categoría
+
+    // 🔹 Obtener categoría
     Category category = categoryRepository.findById(request.categoryId())
         .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
 
+    // 🔹 Crear producto
     Product product = new Product();
     product.setName(request.name());
     product.setPrice(request.price());
@@ -71,8 +96,8 @@ public class ProductServiceImp implements ProductService {
     product.setDescription(request.description());
     product.setCategory(category);
 
-    // Asociar imágenes
-    if (request.images() != null && !request.images().isEmpty()) {
+    // 🔹 Imágenes
+    if (request.images() != null) {
       for (String url : request.images()) {
         ProductImage image = new ProductImage();
         image.setImageUrl(url);
@@ -81,26 +106,43 @@ public class ProductServiceImp implements ProductService {
       }
     }
 
-    // Asociar colecciones
+    // 🔹 Colecciones
     if (request.collections() != null && !request.collections().isEmpty()) {
       for (CollectionResponse colResp : request.collections()) {
         Collection collection = collectionRepository.findById(colResp.id())
             .orElseThrow(() -> new RuntimeException("Colección no encontrada: " + colResp.id()));
+
         ProductCollection pc = new ProductCollection();
+
+        // ID compuesto
+        ProductCollectionId pcId = new ProductCollectionId();
+        pcId.setProductId(null); // no asignar aún
+        pcId.setCollectionId(collection.getId());
+        pc.setId(pcId);
+
         pc.setProduct(product);
         pc.setCollection(collection);
+
+        // 🔹 solo agregar al producto, NO llamar a productCollectionRepository.save(pc)
         product.getProductCollections().add(pc);
       }
     }
 
-    return mapper.toResponse(productRepository.save(product));
+    // 🔹 Guardar producto y todas las relaciones por cascade
+    Product savedProduct = productRepository.save(product);
+
+    return mapper.toResponse(savedProduct);
   }
 
+
+
   @Override
+  @Transactional
   public ProductResponse actualizar(Long id, ProductRequest request) {
     Product product = productRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
 
+    // Actualizar campos básicos
     Category category = categoryRepository.findById(request.categoryId())
         .orElseThrow(() -> new RuntimeException("Categoría no encontrada"));
 
@@ -110,7 +152,7 @@ public class ProductServiceImp implements ProductService {
     product.setDescription(request.description());
     product.setCategory(category);
 
-    // Limpiar y agregar nuevas imágenes
+    // Limpiar y agregar imágenes nuevas
     product.getImages().clear();
     if (request.images() != null && !request.images().isEmpty()) {
       for (String url : request.images()) {
@@ -121,13 +163,31 @@ public class ProductServiceImp implements ProductService {
       }
     }
 
-    // Limpiar y agregar nuevas colecciones
+    // Limpiar y agregar colecciones nuevas
     product.getProductCollections().clear();
     if (request.collections() != null && !request.collections().isEmpty()) {
-      for (CollectionResponse colResp : request.collections()) {
-        Collection collection = collectionRepository.findById(colResp.id())
-            .orElseThrow(() -> new RuntimeException("Colección no encontrada: " + colResp.id()));
+      for (CollectionResponse colInput : request.collections()) {
+
+        Collection collection;
+
+        if (colInput.id() != null) {
+          collection = collectionRepository.findById(colInput.id())
+              .orElseThrow(() -> new RuntimeException("Colección no encontrada: " + colInput.id()));
+        } else if (colInput.name() != null && !colInput.name().isBlank()) {
+          collection = collectionRepository.findByName(colInput.name())
+              .orElseGet(() -> {
+                Collection c = new Collection();
+                c.setName(colInput.name());
+                return collectionRepository.save(c);
+              });
+        } else {
+          continue;
+        }
+
+        // Crear relación
         ProductCollection pc = new ProductCollection();
+        ProductCollectionId pcId = new ProductCollectionId(product.getId(), collection.getId());
+        pc.setId(pcId);
         pc.setProduct(product);
         pc.setCollection(collection);
         product.getProductCollections().add(pc);
