@@ -38,7 +38,6 @@ public class Product {
   private String description;
 
   @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-  @Column(name = "images")
   private Set<ProductImage> images = new HashSet<>();
 
   @ManyToOne(optional = false)

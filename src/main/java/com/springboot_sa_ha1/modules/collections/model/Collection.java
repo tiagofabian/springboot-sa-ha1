@@ -29,6 +29,10 @@ public class Collection {
 
   private String image;
 
-  @OneToMany(mappedBy = "collection", cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(
+      mappedBy = "collection",
+      fetch = FetchType.LAZY,
+      cascade = CascadeType.ALL
+  )
   private Set<ProductCollection> productCollections = new HashSet<>();
 }

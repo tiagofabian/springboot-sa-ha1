@@ -2,11 +2,13 @@ package com.springboot_sa_ha1.modules.collections.controller;
 
 import com.springboot_sa_ha1.modules.collections.dto.CollectionRequest;
 import com.springboot_sa_ha1.modules.collections.dto.CollectionResponse;
+import com.springboot_sa_ha1.modules.collections.dto.CollectionWithProductsResponse;
 import com.springboot_sa_ha1.modules.collections.service.CollectionService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -29,6 +31,17 @@ public class CollectionController {
   public ResponseEntity<CollectionResponse> obtenerPorId(@PathVariable Long id) {
     return ResponseEntity.ok(collectionService.obtenerPorId(id));
   }
+
+  @GetMapping("/filtered-without-product")
+  public List<CollectionResponse> obtenerColeccionesPorSlug(@RequestParam List<String> slugs) {
+    return collectionService.obtenerColeccionesPorSlug(slugs);
+  }
+
+  @GetMapping("/filtered-with-product")
+  public List<CollectionWithProductsResponse> obtenerColeccionesConProductoPorSlug(@RequestParam List<String> slugs) {
+    return collectionService.obtenerColeccionesConProductoPorSlug(slugs);
+  }
+
 
   @PostMapping("/create")
   public ResponseEntity<CollectionResponse> crear(@Valid @RequestBody CollectionRequest request) {
