@@ -1,15 +1,19 @@
 package com.springboot_sa_ha1.modules.categories.service;
 
+import com.springboot_sa_ha1.modules.categories.dto.CategoryWithProductsResponse;
 import com.springboot_sa_ha1.modules.categories.repository.CategoryRepository;
 import com.springboot_sa_ha1.modules.categories.dto.CategoryRequest;
 import com.springboot_sa_ha1.modules.categories.dto.CategoryResponse;
 import com.springboot_sa_ha1.modules.categories.mapper.CategoryMapper;
 import com.springboot_sa_ha1.modules.categories.model.Category;
-import com.springboot_sa_ha1.modules.categories.repository.CategoryRepository;
 import com.springboot_sa_ha1.modules.categories.service.CategoryService;
+import com.springboot_sa_ha1.modules.collections.dto.CollectionResponse;
+import com.springboot_sa_ha1.modules.productimages.model.ProductImage;
+import com.springboot_sa_ha1.modules.products.dto.ProductResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +40,60 @@ public class CategoryServiceImp implements CategoryService {
         .map(mapper::toResponse)
         .orElseThrow(() -> new RuntimeException("Categoria no encontrada"));
   }
+
+  public List<CategoryWithProductsResponse> listarCategoriasConProductosPorSlug(List<String> slugs) {
+
+    // Normalización de slugs
+    List<String> normalizedSlugs = slugs.stream()
+        .map(String::toLowerCase)
+        .map(String::trim)
+        .map(s -> s.replace("-", "_"))
+        .toList();
+
+    // Traemos las categorías con productos usando EntityGraph
+    List<Category> categories = repository.findAllBySlugIn(normalizedSlugs);
+
+    // Mapear a DTO
+    return categories.stream()
+        .map(c -> new CategoryWithProductsResponse(
+            c.getId(),
+            c.getName(),
+            c.getDescription(),
+            c.getSlug(),
+            c.getImage(),
+            c.getProducts().stream()   // List<Product> directo de Category
+                .map(p -> new ProductResponse(
+                    p.getId(),
+                    p.getName(),
+                    p.getPrice(),
+                    p.getStock(),
+                    p.getDescription(),
+                    p.getImages().stream()
+                        .map(ProductImage::getImageUrl)
+                        .filter(Objects::nonNull)
+                        .toList(),
+                    new CategoryResponse(
+                        c.getId(),
+                        c.getName(),
+                        c.getDescription(),
+                        c.getSlug(),
+                        c.getImage()
+                    ),
+                    p.getProductCollections().stream()
+                        .map(col -> new CollectionResponse(
+                            col.getCollection().getId(),
+                            col.getCollection().getName(),
+                            col.getCollection().getDescription(),
+                            col.getCollection().getSlug(),
+                            col.getCollection().getImage()
+                        ))
+                        .toList()
+                ))
+                .toList()
+        ))
+        .toList();
+  }
+
 
   @Override
   public CategoryResponse guardar(CategoryRequest request){

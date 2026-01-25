@@ -44,7 +44,7 @@ public class CollectionServiceImp implements CollectionService {
   }
 
   @Override
-  public List<CollectionResponse> obtenerColeccionesPorSlug(List<String> slugs) {
+  public List<CollectionResponse> listarColeccionesPorSlug(List<String> slugs) {
 
     // 🔹 Normalización (misma regla que el otro método)
     List<String> normalizedSlugs = slugs.stream()
@@ -66,7 +66,7 @@ public class CollectionServiceImp implements CollectionService {
   }
 
 
-  public List<CollectionWithProductsResponse> obtenerColeccionesConProductoPorSlug(List<String> slugs) {
+  public List<CollectionWithProductsResponse> listarColeccionesConProductosPorSlug(List<String> slugs) {
 
     // ✅ Normalización de slugs (problema real ya identificado)
     List<String> normalizedSlugs = slugs.stream()
